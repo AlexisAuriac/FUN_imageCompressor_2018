@@ -1,0 +1,8 @@
+.stack-work/
+
+# binary
+imageCompressor
+
+# sublime-text
+*.sublime-project
+*.sublime-workspace
