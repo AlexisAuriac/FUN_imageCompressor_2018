@@ -27,7 +27,11 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Utility
+      Split
+      Color
+      Point
+      Pixel
   other-modules:
       Paths_imageCompressor
   hs-source-dirs:

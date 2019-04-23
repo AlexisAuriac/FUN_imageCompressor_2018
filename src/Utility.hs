@@ -1,0 +1,37 @@
+module Utility (
+    trimPre,
+    trimSuf,
+    trim,
+    allElemsOf,
+    isInt,
+    printList
+) where
+
+trimPre :: (Eq a) => [a] -> a -> [a]
+trimPre [] _ = []
+trimPre (x:xs) c
+    | x == c = trimPre xs c
+    | otherwise = x:xs
+
+trimSuf :: (Eq a) => [a] -> a -> [a]
+trimSuf xs c = reverse $ trimPre (reverse xs) c
+
+trim :: (Eq a) => [a] -> a -> [a]
+trim xs c = trimSuf (trimPre xs c) c
+
+allElemsOf :: (Eq a) => [a] -> [a] -> Bool
+allElemsOf [] _ = True
+allElemsOf (c:xs) src = c `elem` src && (allElemsOf xs src)
+
+isInt :: String -> Bool
+isInt "" = False
+isInt (x:xs)
+    | x == '-' = allElemsOf xs digits
+    | otherwise = allElemsOf (x:xs) digits
+    where digits = "0123456789"
+
+printList :: (Show a) => [a] -> (a -> IO ()) -> IO ()
+printList [] _ = return ()
+printList (x:xs) f = do
+    f x
+    printList xs f
