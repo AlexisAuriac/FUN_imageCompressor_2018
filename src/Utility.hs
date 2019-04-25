@@ -4,6 +4,7 @@ module Utility (
     trim,
     allElemsOf,
     isInt,
+    isUint,
     printList
 ) where
 
@@ -22,6 +23,10 @@ trim xs c = trimSuf (trimPre xs c) c
 allElemsOf :: (Eq a) => [a] -> [a] -> Bool
 allElemsOf [] _ = True
 allElemsOf (c:xs) src = c `elem` src && (allElemsOf xs src)
+
+isUint :: String -> Bool
+isUint "" = False
+isUint xs = allElemsOf xs "0123456789"
 
 isInt :: String -> Bool
 isInt "" = False

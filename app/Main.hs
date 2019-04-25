@@ -19,6 +19,6 @@ main = do
     res <- try (imgCompressor params) :: IO (Either SomeException ())
     case res of
         Left err -> do
-            print $ show err
+            print err
             exitWith (ExitFailure 84)
         Right _ -> exitSuccess
