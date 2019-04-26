@@ -7,23 +7,43 @@ import Control.Exception
 import Utility
 import Params
 import Pixel
+import Color
 import Centroid
 import Cluster
 
--- kmeans :: [Clusters] -> [Pixel] -> Float -> [Clusters]
--- kmeans clusters pixels lim =
+clusterColorPart :: (Color -> Int) -> Cluster -> [Int]
+clusterColorPart access cluster = map getColorByte pixels
+    where
+        pixels = clusterPixels cluster
+        getColorByte pixel = access $ pixelColor pixel
+
+averageCentroid :: Cluster -> Centroid
+averageCentroid cluster = Centroid averageR averageG averageB
+    where
+        averageR = average $ clusterColorPart colorR cluster
+        averageG = average $ clusterColorPart colorG cluster
+        averageB = average $ clusterColorPart colorB cluster
+
+updateCentroids :: [Cluster] -> [Centroid]
+updateCentroids clusters = map averageCentroid clusters
+
+updateClusters :: [Cluster] -> [Pixel] -> [Cluster]
+updateClusters clusters pixels = getClusters centroids pixels
+    where
+        centroids = updateCentroids clusters
+
+kmeans :: [Cluster] -> [Pixel] -> Float -> [Cluster]
+kmeans clusters pixels convLim = case newClusters of
+    clusters -> clusters
+    _ -> kmeans newClusters pixels convLim
+    where
+        newClusters = updateClusters clusters pixels
 
 imgCompressor :: IO ()
 imgCompressor = do
     params <- getParsedArgv
     let start = getClusters (paramsCentroids params) (paramsPixels params)
-    -- printList (paramsPixels params) dispPixel
-    -- putStrLn $ "nb colors: " ++ (show (paramsNbColors params))
-    -- putStrLn $ "conv lim: " ++ (show (paramsConvLim params))
-    -- printList (paramsCentroids params) dispCentroid
-    printList start dispCluster
-    -- where
-        -- end = kmeans start (paramsPixels params) (paramsConvLim params)
+    printList (kmeans start (paramsPixels params) (paramsConvLim params)) dispCluster
 
 main :: IO ()
 main = do

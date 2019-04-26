@@ -15,7 +15,7 @@ import Centroid
 data Cluster = Cluster {
     clusterCentroid :: Centroid,
     clusterPixels :: [Pixel]
-} deriving (Show)
+} deriving (Eq, Show)
 
 dispCluster :: Cluster -> IO ()
 dispCluster cluster = do

@@ -5,7 +5,8 @@ module Utility (
     allElemsOf,
     isInt,
     isUint,
-    printList
+    printList,
+    average
 ) where
 
 trimPre :: (Eq a) => [a] -> a -> [a]
@@ -40,3 +41,9 @@ printList [] _ = return ()
 printList (x:xs) f = do
     f x
     printList xs f
+
+average :: [Int] -> Float
+average arr = sumArr / len
+    where
+        sumArr = fromIntegral (sum arr) :: Float
+        len = fromIntegral (length arr) :: Float
