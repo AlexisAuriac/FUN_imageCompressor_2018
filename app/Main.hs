@@ -7,16 +7,23 @@ import Control.Exception
 import Utility
 import Params
 import Pixel
-import Color
 import Centroid
+import Cluster
+
+-- kmeans :: [Clusters] -> [Pixel] -> Float -> [Clusters]
+-- kmeans clusters pixels lim =
 
 imgCompressor :: IO ()
 imgCompressor = do
     params <- getParsedArgv
-    printList (paramsPixels params) dispPixel
-    putStrLn $ "nb colors: " ++ (show (paramsNbColors params))
-    putStrLn $ "conv lim: " ++ (show (paramsConvLim params))
-    printList (paramsCentroids params) dispCentroid
+    let start = getClusters (paramsCentroids params) (paramsPixels params)
+    -- printList (paramsPixels params) dispPixel
+    -- putStrLn $ "nb colors: " ++ (show (paramsNbColors params))
+    -- putStrLn $ "conv lim: " ++ (show (paramsConvLim params))
+    -- printList (paramsCentroids params) dispCentroid
+    printList start dispCluster
+    -- where
+        -- end = kmeans start (paramsPixels params) (paramsConvLim params)
 
 main :: IO ()
 main = do

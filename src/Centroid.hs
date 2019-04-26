@@ -50,8 +50,8 @@ colorToCentroid :: Color -> Centroid
 colorToCentroid color = Centroid x y z
     where
         x = fromIntegral (colorR color) :: Float
-        y = fromIntegral (colorR color) :: Float
-        z = fromIntegral (colorR color) :: Float
+        y = fromIntegral (colorG color) :: Float
+        z = fromIntegral (colorB color) :: Float
 
 euclidianDist :: Centroid -> Centroid -> Float
 euclidianDist c1 c2 = sqrt (dx + dy + dz)

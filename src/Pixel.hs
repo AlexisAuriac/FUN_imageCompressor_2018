@@ -18,7 +18,7 @@ data Pixel = Pixel {
 
 dispPixel :: Pixel -> IO ()
 dispPixel pix = do
-    printf "(%d, %d) (%d, %d, %d)\n" x y r g b
+    printf "(%d,%d) (%d,%d,%d)\n" x y r g b
     where
         x = pointX $ pixelPoint pix
         y = pointY $ pixelPoint pix

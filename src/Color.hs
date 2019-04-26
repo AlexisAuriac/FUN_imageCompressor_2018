@@ -19,7 +19,7 @@ data Color = Color {
 
 dispColor :: Color -> IO ()
 dispColor c = do
-    printf "(%d, %d, %d)\n" r g b
+    printf "(%d,%d,%d)\n" r g b
     where
         r = colorR c
         g = colorG c

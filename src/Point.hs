@@ -18,7 +18,7 @@ data Point = Point {
 
 dispPoint :: Point -> IO ()
 dispPoint p = do
-    printf "(%d, %d)\n" x y
+    printf "(%d,%d)\n" x y
     where
         x = pointX p
         y = pointY p
