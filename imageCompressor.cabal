@@ -35,6 +35,7 @@ library
       Point
       Pixel
       Cluster
+      Kmeans
   other-modules:
       Paths_imageCompressor
   hs-source-dirs:
