@@ -1,8 +1,5 @@
 module Params (
-    Params,
-    paramsPixels,
-    paramsNbColors,
-    paramsConvLim,
+    Params(..),
     getParsedArgv
 ) where
 
@@ -14,11 +11,13 @@ import Control.Exception
 import Utility
 import Split
 import Pixel
+import Centroid
 
 data Params = Params {
     paramsPixels :: [Pixel],
     paramsNbColors :: Int,
-    paramsConvLim :: Float
+    paramsConvLim :: Float,
+    paramsCentroids :: [Centroid]
 }
 
 readFileLines :: String -> IO [String]
@@ -42,11 +41,12 @@ getParsedArgv = do
     getParsedArgv' argv progName
 getParsedArgv' argv progName
     | length argv /= 3 = error $ usage progName
-    | otherwise = readFileLines (argv !! 2) >>= (
-        \fileLines ->
-            return $ Params (map getPixel fileLines) nbColors convLim
-        )
+    | nbColors <= 0 = error "Invalid number of colors"
+    | convLim <= 0 || convLim > 1 = error "Invalid convergence limit"
+    | otherwise = do
+        fileLines <- readFileLines (argv !! 2)
+        initCentroids <- getRandomCentroids nbColors
+        return $ Params (map getPixel fileLines) nbColors convLim initCentroids
     where
-        ustr = usage "lol"
         nbColors = read (argv !! 0) :: Int
         convLim = read (argv !! 1) :: Float

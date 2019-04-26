@@ -1,12 +1,7 @@
 module Color (
-    Color,
-    colorR,
-    colorG,
-    colorB,
+    Color(..),
     dispColor,
-    getColor,
-    euclidianDist,
-    closestColor
+    getColor
 ) where
 
 import Data.List
@@ -50,23 +45,3 @@ getColor str
         g = getColorByte (values !! 1)
         b = getColorByte (values !! 2)
         color = Color r g b
-
-euclidianDist :: Color -> Color -> Float
-euclidianDist c1 c2 = sqrt (dx + dy + dz)
-    where
-        dx = (fromIntegral (colorR c1) - fromIntegral (colorR c2))**2
-        dy = (fromIntegral (colorG c1) - fromIntegral (colorG c2))**2
-        dz = (fromIntegral (colorB c1) - fromIntegral (colorB c2))**2
-
-closestColor :: [Color] -> Color -> Color
-closestColor [] _ = error "No line given"
-closestColor (x:xs) c1 = closestColor' xs c1 x
-
-closestColor' :: [Color] -> Color -> Color -> Color
-closestColor' [] _ currClosest = currClosest
-closestColor' (x:xs) c1 currClosest
-    | newDist < distClosest = closestColor' xs c1 x
-    | otherwise = closestColor' xs c1 currClosest
-    where
-        newDist = euclidianDist c1 x
-        distClosest = euclidianDist c1 currClosest

@@ -1,11 +1,7 @@
 module Point (
-    Point,
-    pointX,
-    pointY,
+    Point(..),
     dispPoint,
-    getPoint,
-    euclidianDist,
-    closestPoint
+    getPoint
 ) where
 
 import Data.List
@@ -41,22 +37,3 @@ getPoint str
         x = read (values !! 0) :: Int
         y = read (values !! 1) :: Int
         point = Point x y
-
-euclidianDist :: Point -> Point -> Float
-euclidianDist p1 p2 = sqrt (dx + dy)
-    where
-        dx = (fromIntegral (pointX p1) - fromIntegral (pointX p2))**2
-        dy = (fromIntegral (pointY p1) - fromIntegral (pointY p2))**2
-
-closestPoint :: [Point] -> Point -> Point
-closestPoint [] _ = error "No line given"
-closestPoint (x:xs) p1 = closestPoint' xs p1 x
-
-closestPoint' :: [Point] -> Point -> Point -> Point
-closestPoint' [] _ currClosest = currClosest
-closestPoint' (x:xs) p1 currClosest
-    | newDist < distClosest = closestPoint' xs p1 x
-    | otherwise = closestPoint' xs p1 currClosest
-    where
-        newDist = euclidianDist p1 x
-        distClosest = euclidianDist p1 currClosest

@@ -1,7 +1,5 @@
 module Pixel (
-    Pixel,
-    pixelPoint,
-    pixelColor,
+    Pixel(..),
     dispPixel,
     getPixel
 ) where
