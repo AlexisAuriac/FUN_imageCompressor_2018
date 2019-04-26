@@ -33,9 +33,9 @@ updateClusters clusters pixels = getClusters centroids pixels
         centroids = updateCentroids clusters
 
 kmeans :: [Cluster] -> [Pixel] -> Float -> [Cluster]
-kmeans clusters pixels convLim = case newClusters of
-    clusters -> clusters
-    _ -> kmeans newClusters pixels convLim
+kmeans clusters pixels convLim
+    | newClusters == clusters = clusters
+    | otherwise = kmeans newClusters pixels convLim
     where
         newClusters = updateClusters clusters pixels
 
