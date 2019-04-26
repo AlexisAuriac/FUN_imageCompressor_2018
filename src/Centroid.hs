@@ -19,7 +19,7 @@ data Centroid = Centroid {
 
 dispCentroid :: Centroid -> IO ()
 dispCentroid c = do
-    printf "(%f, %f, %f)\n" x y z
+    printf "(%.2f, %.2f, %.2f)\n" x y z
     where
         x = centroidX c
         y = centroidY c
