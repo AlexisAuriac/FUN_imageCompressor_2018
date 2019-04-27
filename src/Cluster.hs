@@ -46,13 +46,3 @@ getClusters [] _ = []
 getClusters (mean:means) pixels = cluster:getClusters means pixLeft
     where
         (cluster, pixLeft) = createCluster mean (mean:means) pixels
-
--- getClusters :: [Centroid] -> [Pixel] -> [Cluster]
--- getClusters means pixels = getClusters' means pixels []
-
--- getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
--- getClusters' [] _ clusters = clusters
--- getClusters' (mean:means) pixels clusters =
---     getClusters' means pixLeft (cluster:clusters)
---     where
---         (cluster, pixLeft) = createCluster mean (mean:means) pixels
