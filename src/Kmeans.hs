@@ -15,7 +15,9 @@ clusterColorPart access cluster = map getColorByte pixels
         getColorByte pixel = access $ pixelColor pixel
 
 averageCentroid :: Cluster -> Centroid
-averageCentroid cluster = Centroid averageR averageG averageB
+averageCentroid cluster
+    | (clusterPixels cluster) == [] = clusterCentroid cluster
+    | otherwise = Centroid averageR averageG averageB
     where
         averageR = average $ clusterColorPart colorR cluster
         averageG = average $ clusterColorPart colorG cluster

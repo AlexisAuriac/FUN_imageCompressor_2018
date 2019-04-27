@@ -31,7 +31,8 @@ createCluster mean allMeans pixels = (cluster, left)
         (kept, left) = createCluster' mean allMeans pixels ([], [])
         cluster = Cluster mean kept
 
-createCluster' :: Centroid -> [Centroid] -> [Pixel] -> ([Pixel], [Pixel]) -> ([Pixel], [Pixel])
+createCluster' :: Centroid -> [Centroid] -> [Pixel] -> ([Pixel], [Pixel])
+    -> ([Pixel], [Pixel])
 createCluster' _ _ [] clusters = clusters
 createCluster' mean allMeans (x:xs) (kept, left)
     | closest == mean = createCluster' mean allMeans xs (x:kept, left)
@@ -51,6 +52,7 @@ getClusters (mean:means) pixels = cluster:getClusters means pixLeft
 
 -- getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
 -- getClusters' [] _ clusters = clusters
--- getClusters' (mean:means) pixels clusters = getClusters' means pixLeft (cluster:clusters)
+-- getClusters' (mean:means) pixels clusters =
+--     getClusters' means pixLeft (cluster:clusters)
 --     where
 --         (cluster, pixLeft) = createCluster mean (mean:means) pixels
