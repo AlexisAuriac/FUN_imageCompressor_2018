@@ -1,4 +1,5 @@
 .stack-work/
+*.hi
 
 # binary
 imageCompressor
@@ -6,3 +7,6 @@ imageCompressor
 # sublime-text
 *.sublime-project
 *.sublime-workspace
+
+# vscode
+.vscode*
