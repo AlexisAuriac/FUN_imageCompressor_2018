@@ -41,14 +41,33 @@ createCluster' mean allMeans (x:xs) (kept, left)
         toPlace = colorToCentroid (pixelColor x)
         closest = closestCentroid allMeans toPlace
 
+-- getClusters :: [Centroid] -> [Pixel] -> [Cluster]
+-- getClusters [] _ = []
+-- getClusters (mean:means) pixels = cluster:getClusters means pixLeft
+--     where
+--         (cluster, pixLeft) = createCluster mean (mean:means) pixels
+
 getClusters :: [Centroid] -> [Pixel] -> [Cluster]
-getClusters [] _ = []
-getClusters (mean:means) pixels = cluster:getClusters means pixLeft
+getClusters means pixels = getClusters' means pixels []
+
+getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
+
+
+
+
+
+
+getClusters' [] _ clusters = []
+getClusters' (mean:means) pixels clusters =
+    cluster:getClusters' means pixLeft (cluster:clusters)
+
+
+
+
+
+
     where
         (cluster, pixLeft) = createCluster mean (mean:means) pixels
-
--- getClusters :: [Centroid] -> [Pixel] -> [Cluster]
--- getClusters means pixels = getClusters' means pixels []
 
 -- getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
 -- getClusters' [] _ clusters = clusters
