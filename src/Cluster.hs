@@ -28,21 +28,29 @@ createCluster :: Centroid -> [Centroid] -> [Pixel] -> (Cluster, [Pixel])
 createCluster mean _ [] = (Cluster mean [], [])
 createCluster mean allMeans pixels = (cluster, left)
     where
-        (kept, left) = createCluster' mean allMeans pixels
+        (kept, left) = createCluster' mean allMeans pixels ([], [])
         cluster = Cluster mean kept
 
-createCluster' :: Centroid -> [Centroid] -> [Pixel] -> ([Pixel], [Pixel])
-createCluster' _ _ [] = ([], [])
-createCluster' mean allMeans (x:xs)
-    | closest == mean = (x:kept, left)
-    | otherwise = (kept, x:left)
+createCluster' :: Centroid -> [Centroid] -> [Pixel] -> ([Pixel], [Pixel]) -> ([Pixel], [Pixel])
+createCluster' _ _ [] clusters = clusters
+createCluster' mean allMeans (x:xs) (kept, left)
+    | closest == mean = createCluster' mean allMeans xs (x:kept, left)
+    | otherwise = createCluster' mean allMeans xs (kept, x:left)
     where
         toPlace = colorToCentroid (pixelColor x)
         closest = closestCentroid allMeans toPlace
-        (kept, left) = createCluster' mean allMeans xs
 
 getClusters :: [Centroid] -> [Pixel] -> [Cluster]
 getClusters [] _ = []
 getClusters (mean:means) pixels = cluster:getClusters means pixLeft
     where
         (cluster, pixLeft) = createCluster mean (mean:means) pixels
+
+-- getClusters :: [Centroid] -> [Pixel] -> [Cluster]
+-- getClusters means pixels = getClusters' means pixels []
+
+-- getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
+-- getClusters' [] _ clusters = clusters
+-- getClusters' (mean:means) pixels clusters = getClusters' means pixLeft (cluster:clusters)
+--     where
+--         (cluster, pixLeft) = createCluster mean (mean:means) pixels
