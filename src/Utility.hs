@@ -42,8 +42,10 @@ printList (x:xs) f = do
     f x
     printList xs f
 
-average :: [Int] -> Float
+average :: (Integral a) => [a] -> Float
 average arr = sumArr / len
     where
+        -- sumArr = sum arr
         sumArr = fromIntegral (sum arr) :: Float
         len = fromIntegral (length arr) :: Float
+
