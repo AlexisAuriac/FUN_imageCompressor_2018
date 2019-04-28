@@ -3,7 +3,7 @@ module Centroid (
     dispCentroid,
     getRandomCentroids,
     colorToCentroid,
-    closestCentroid
+    euclidianDist
 ) where
 
 import Text.Printf
@@ -59,16 +59,3 @@ euclidianDist c1 c2 = sqrt (dx + dy + dz)
         dx = (centroidX c1 - centroidX c2)**2
         dy = (centroidY c1 - centroidY c2)**2
         dz = (centroidZ c1 - centroidZ c2)**2
-
-closestCentroid :: [Centroid] -> Centroid -> Centroid
-closestCentroid [] _ = error "No line given"
-closestCentroid (x:xs) c1 = closestCentroid' xs c1 x
-
-closestCentroid' :: [Centroid] -> Centroid -> Centroid -> Centroid
-closestCentroid' [] _ currClosest = currClosest
-closestCentroid' (x:xs) c1 currClosest
-    | newDist < distClosest = closestCentroid' xs c1 x
-    | otherwise = closestCentroid' xs c1 currClosest
-    where
-        newDist = euclidianDist c1 x
-        distClosest = euclidianDist c1 currClosest

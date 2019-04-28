@@ -1,7 +1,6 @@
 module Cluster (
     Cluster(..),
     dispCluster,
-    createCluster,
     getClusters
 ) where
 
@@ -24,29 +23,45 @@ dispCluster cluster = do
     putStrLn "-"
     printList (clusterPixels cluster) dispPixel
 
-createCluster :: Centroid -> [Centroid] -> [Pixel] -> (Cluster, [Pixel])
-createCluster mean _ [] = (Cluster mean [], [])
-createCluster mean allMeans pixels = (cluster, left)
-    where
-        (kept, left) = createCluster' mean allMeans pixels ([], [])
-        cluster = Cluster mean kept
+initClusters :: [Centroid] -> [Cluster]
+initClusters centroids = map initCluster centroids
+    where initCluster centroid = Cluster centroid []
 
-createCluster' :: Centroid -> [Centroid] -> [Pixel] -> ([Pixel], [Pixel])
-    -> ([Pixel], [Pixel])
-createCluster' _ _ [] clusters = clusters
-createCluster' mean allMeans (x:xs) (kept, left)
-    | closest == mean = createCluster' mean allMeans xs (x:kept, left)
-    | otherwise = createCluster' mean allMeans xs (kept, x:left)
+findClosestCluster :: Pixel -> [Cluster] -> Int
+findClosestCluster pixel (c:clusters) =
+    findClosestCluster' pixCentroid centroids 1 0 initDist
     where
-        toPlace = colorToCentroid (pixelColor x)
-        closest = closestCentroid allMeans toPlace
+        centroids = map clusterCentroid clusters
+        pixCentroid = colorToCentroid (pixelColor pixel)
+        initDist = euclidianDist pixCentroid (clusterCentroid c)
+
+findClosestCluster' :: Centroid -> [Centroid] -> Int -> Int -> Float -> Int
+findClosestCluster' _ [] _ idxBest _ = idxBest
+findClosestCluster' pixel (c:centroids) idx idxBest bestDist
+    | otherDist < bestDist = findClosestCluster' pixel centroids (idx+1) idx otherDist
+    | otherwise = findClosestCluster' pixel centroids (idx+1) idxBest bestDist
+    where otherDist = euclidianDist pixel c
+
+addCluster :: Cluster -> Pixel -> Cluster
+addCluster cluster new = Cluster centroid (new:pixels)
+    where
+        centroid = clusterCentroid cluster
+        pixels = clusterPixels cluster
+
+replace :: Int -> a -> [a] -> [a]
+replace idx new xs = start ++ (new:end)
+    where
+        start = take idx xs
+        end = drop (idx + 1) xs
 
 getClusters :: [Centroid] -> [Pixel] -> [Cluster]
-getClusters means pixels = getClusters' means pixels []
+getClusters centroids pixels = getClusters' pixels clusters
+    where clusters = initClusters centroids
 
-getClusters' :: [Centroid] -> [Pixel] -> [Cluster] -> [Cluster]
-getClusters' [] _ clusters = reverse clusters
-getClusters' (mean:means) pixels clusters =
-    getClusters' means pixLeft (cluster:clusters)
+getClusters' :: [Pixel] -> [Cluster] -> [Cluster]
+getClusters' [] clusters = clusters
+getClusters' (p:pixels) clusters = getClusters' pixels newClusters
     where
-        (cluster, pixLeft) = createCluster mean (mean:means) pixels
+        idxCluster = findClosestCluster p clusters
+        updatedCluster = addCluster (clusters !! idxCluster) p
+        newClusters = replace idxCluster updatedCluster clusters
