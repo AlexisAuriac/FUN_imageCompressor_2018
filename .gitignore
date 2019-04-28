@@ -4,6 +4,9 @@
 # binary
 imageCompressor
 
+# examples
+/examples/
+
 # sublime-text
 *.sublime-project
 *.sublime-workspace
