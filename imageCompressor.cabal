@@ -62,6 +62,7 @@ test-suite imageCompressor-test
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
+      UtilityTest
       Paths_imageCompressor
   hs-source-dirs:
       test
