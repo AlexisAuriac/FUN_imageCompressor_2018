@@ -60,7 +60,7 @@ executable imageCompressor
 
 test-suite imageCompressor-test
   type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  main-is: Main.hs
   other-modules:
       Paths_imageCompressor
   hs-source-dirs:
@@ -69,4 +69,6 @@ test-suite imageCompressor-test
   build-depends:
       base >=4.7 && <5
     , imageCompressor
+    , hspec
+    , QuickCheck
   default-language: Haskell2010
